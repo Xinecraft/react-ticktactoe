@@ -1,6 +1,6 @@
-# Ticktactoe Human vs MiniMax (with React Typescript and Tailwind)
+# TicktTacToe Human vs MiniMax (with React Typescript and Tailwind)
 
-[Visit Demo](https://react-ticktactoe.netlify.app/)
+Click here for Live Demo [Visit Demo Link](https://react-ticktactoe.netlify.app/)
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
