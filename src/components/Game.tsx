@@ -38,6 +38,44 @@ export default class Game extends React.Component {
     });
   }
 
+  computerPlay() {
+    const bestMove = this.calculateBestMove();
+    console.log("Best Move: ", bestMove);
+    this.handleClick(bestMove);
+  }
+
+  calculateBestMove(): number {
+    const history = this.state.history;
+    const current = history[this.state.stepNumber];
+    const squares = current.squares.slice();
+    let bestScore: number = -Infinity;
+    let bestMove: number = -Infinity;
+    for (let i = 0; i < squares.length; i++) {
+      // Check if available
+      if (squares[i]) {
+        continue;
+      }
+      // Play the move
+      squares[i] = "O";
+      let score = minimax(squares.slice(), 0, false);
+      if (bestScore < score) {
+        bestScore = score;
+        bestMove = i;
+      }
+      console.log("New best move: ", bestMove)
+      squares[i] = "";
+    }
+    return bestMove;
+  }
+
+  userPlay(i: number) {
+    if (!this.state.xIsNext) {
+      return;
+    }
+    this.handleClick(i);
+    setTimeout(() => this.computerPlay(), 500);
+  }
+
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -70,15 +108,16 @@ export default class Game extends React.Component {
     return (
       <div className="flex flex-col items-center">
         <div className="p-10">
-          <Board
-            squares={current.squares}
-            onClick={(i) => this.handleClick(i)}
-          />
+          <Board squares={current.squares} onClick={(i) => this.userPlay(i)} />
         </div>
         <div className="mt-1 text-center">
           <div
             className={`px-4 py-3 leading-normal text-blue-700 rounded-lg ${
-              winner === "X" ? "bg-green-100" : "bg-blue-100"
+              !winner
+                ? "bg-blue-100"
+                : winner === "X"
+                ? "bg-red-100"
+                : "bg-green-100"
             }`}
           >
             {status}
@@ -108,4 +147,45 @@ function calculateWinner(squares: Array<string>): string | null {
     }
   }
   return null;
+}
+
+function minimax(squares: Array<string>, depth: number, isMaximizingPlayer: boolean) {
+  const aiScoreMap: any = {
+    X: -1,
+    O: 1,
+    null: 0,
+  };
+  const winner: any = calculateWinner(squares);
+  const isFull = squares.every(x => x)
+  if (winner || isFull) {
+    return aiScoreMap[winner];
+  }
+
+  if (isMaximizingPlayer) {
+    let bestScore: number = -Infinity;
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i]) {
+        continue;
+      }
+      // Play the move
+      squares[i] = "O";
+      let score = minimax(squares, depth + 1, false);
+      bestScore = Math.max(bestScore, score);
+      squares[i] = "";
+    }
+    return bestScore
+  } else {
+    let bestScore: number = Infinity;
+    for (let i = 0; i < squares.length; i++) {
+      if (squares[i]) {
+        continue;
+      }
+      // Play the move
+      squares[i] = "X";
+      let score = minimax(squares, depth + 1, true);
+      bestScore = Math.min(bestScore, score);
+      squares[i] = "";
+    }
+    return bestScore
+  }
 }

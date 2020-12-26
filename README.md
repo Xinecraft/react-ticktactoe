@@ -1,4 +1,4 @@
-# Ticktactoe with React Typescript and Tailwind
+# Ticktactoe Human vs MiniMax (with React Typescript and Tailwind)
 
 [Visit Demo](https://react-ticktactoe.netlify.app/)
 
