@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 
 function Square(props: any) {
   return (
-    <button style={{marginRight: "-1px", marginTop: '-1px'}} className="border border-gray-500 float-left font-bold h-16 w-16 text-center text-xl p-0 focus:outline-none" onClick={props.onClick}>
+    <button className="border border-gray-500 float-left font-bold h-16 w-16 text-center text-xl p-0 focus:outline-none" onClick={props.onClick}>
       {props.value}
     </button>
   );
