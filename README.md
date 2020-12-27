@@ -4,6 +4,12 @@ Click here for Live Demo [Visit Demo Link](https://react-ticktactoe.netlify.app/
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+### Feature ToDo ✓
+- [x] Add Minimax
+- [ ] Restart when Tie.
+- [ ] Randomize Initial Move.
+- [ ] Add Reinforcement Learning version.
+
 ## Available Scripts
 
 In the project directory, you can run:
