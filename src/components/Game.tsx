@@ -9,7 +9,7 @@ export default class Game extends React.Component {
       },
     ],
     xIsNext: true,
-    stepNumber: 0,
+    stepNumber: 0
   };
 
   handleClick(i: number) {
@@ -27,7 +27,7 @@ export default class Game extends React.Component {
         },
       ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
+      xIsNext: !this.state.xIsNext
     });
   }
 
@@ -36,6 +36,15 @@ export default class Game extends React.Component {
       stepNumber: step,
       xIsNext: step % 2 === 0,
     });
+  }
+
+  componentDidMount() {
+    if (Math.random() > 0.5) {
+      this.setState({
+        xIsNext: false
+      })
+      setTimeout(() => this.computerPlay(), 500);
+    }
   }
 
   computerPlay() {

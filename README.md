@@ -7,7 +7,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ### Feature ToDo ✓
 - [x] Add Minimax
 - [ ] Restart when Tie.
-- [ ] Randomize Initial Move.
+- [x] Randomize Initial Move.
 - [ ] Add Reinforcement Learning version.
 
 ## Available Scripts
