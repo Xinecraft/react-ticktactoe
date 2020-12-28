@@ -16,7 +16,8 @@ export default class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
+    const isTie = squares.every(x => x)
+    if (calculateWinner(squares) || squares[i] || isTie) {
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
@@ -32,10 +33,26 @@ export default class Game extends React.Component {
   }
 
   jumpTo(step: number) {
-    this.setState({
-      stepNumber: step,
-      xIsNext: step % 2 === 0,
-    });
+    // If Move is 0 then Reset Game
+    if (step === 0) {
+      if (Math.random() > 0.5) {
+        this.setState({
+          xIsNext: false,
+          stepNumber: 0
+        })
+        setTimeout(() => this.computerPlay(), 100);
+      } else {
+        this.setState({
+          xIsNext: true,
+          stepNumber: 0
+        })
+      }
+    } else {
+      this.setState({
+        stepNumber: step,
+        xIsNext: step % 2 === 0,
+      });
+    }
   }
 
   componentDidMount() {
@@ -49,7 +66,7 @@ export default class Game extends React.Component {
 
   computerPlay() {
     const bestMove = this.calculateBestMove();
-    console.log("Best Move: ", bestMove);
+    // console.log("Best Move: ", bestMove);
     this.handleClick(bestMove);
   }
 
@@ -71,7 +88,7 @@ export default class Game extends React.Component {
         bestScore = score;
         bestMove = i;
       }
-      console.log("New best move: ", bestMove)
+      // console.log("New best move: ", bestMove)
       squares[i] = "";
     }
     return bestMove;
@@ -89,9 +106,10 @@ export default class Game extends React.Component {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
     const winner = calculateWinner(current.squares);
+    const isTie = current.squares.every(x => x)
 
     const moves = history.map((step, move) => {
-      const desc = move ? "Go to move #" + move : "Reset Game";
+      const desc = move ? "Go to move #" + move : "Restart Game";
       return (
         <li
           className="uppercase px-8 py-2 rounded border border-blue-600 text-blue-600 max-w-max shadow-sm hover:shadow-md"
@@ -110,12 +128,15 @@ export default class Game extends React.Component {
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else {
+    } else if (isTie) {
+      status = "Game ended in a Tie";
+    } 
+    else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
 
     return (
-      <div className="flex flex-col items-center">
+      <div className="flex flex-col items-center p-2">
         <div className="p-10">
           <Board squares={current.squares} onClick={(i) => this.userPlay(i)} />
         </div>
